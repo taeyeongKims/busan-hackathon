@@ -2,7 +2,7 @@ import { response } from '../../config/response.js';
 import { status } from '../../config/response.status.js';
 import { StatusCodes } from "http-status-codes";
 import { joinUser, loginUser,  AddLaw, AddInterior, AddCook, AddClean, AddStorage } from './../services/user.service.js';
-import { getLawPost } from './../providers/user.provider.js';
+import { getLawPost, getInteriorPost, getCookPost, getCleanPost, getStoragePost } from './../providers/user.provider.js';
 
 export const userSignin = async (req, res, next) => {
     const signIn = req.body;
@@ -89,24 +89,24 @@ export const userReadLaw = async (req, res, next) => {
 // 인테리어 게시글 조회
 
 export const userReadInterior = async (req, res, next) => {
-    return res.send(response(status.SUCCESS, await getLawPost(req.params)));
+    return res.send(response(status.SUCCESS, await getInteriorPost(req.params)));
 }
 
 // 요리 게시글 조회
 
 export const userReadCook = async (req, res, next) => {
-    return res.send(response(status.SUCCESS, await getLawPost(req.params)));
+    return res.send(response(status.SUCCESS, await getCookPost(req.params)));
 }
 
 // 청소 게시글 조회
 
 export const userReadClean = async (req, res, next) => {
-    return res.send(response(status.SUCCESS, await getLawPost(req.params)));
+    return res.send(response(status.SUCCESS, await getCleanPost(req.params)));
 }
 
 // 수납 게시글 조회
 
 export const userReadStorage = async (req, res, next) => {
-    return res.send(response(status.SUCCESS, await getLawPost(req.params)));
+    return res.send(response(status.SUCCESS, await getStoragePost(req.params)));
 }
 
