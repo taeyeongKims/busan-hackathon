@@ -1,7 +1,7 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { signinResponseDTO, loginResponseDTO, postResponseDTO} from "./../dtos/user.response.dto.js"
-import { addUser, getUser, confirmUser, addLawData, addInteriorData, addCookData, addCleanData, addStorageData } from "../models/user.dao.js";
+import { addUser, getUser, confirmUser, addLawData, addInteriorData, addCookData, addCleanData, addStorageData, getPost } from "../models/user.dao.js";
 
 export const joinUser = async (body) => {
 
@@ -33,9 +33,9 @@ export const joinUser = async (body) => {
     }
  }
 
-export const AddLaw = async(body) => {
+export const AddLaw = async(userId, body) => {
     const joinLawDataId = await addLawData ({
-        'user_id' : body.user_id,
+        'user_id' : userId.userId,
         'title' : body.title,
         'content' : body.content,
         'type' : body.type,
@@ -44,9 +44,9 @@ export const AddLaw = async(body) => {
     return postResponseDTO(await getPost(joinLawDataId));
 }
 
-export const AddInterior = async(body) => {
+export const AddInterior = async(userId, body) => {
     const joinInteriorDataId = await addInteriorData ({
-        'user_id' : body.user_id,
+        'user_id' : userId.userId,
         'title' : body.title,
         'content' : body.content,
         'type' : body.type,
@@ -55,9 +55,9 @@ export const AddInterior = async(body) => {
     return postResponseDTO(await getPost(joinInteriorDataId));
 }
 
-export const AddCook = async(body) => {
+export const AddCook = async(userId, body) => {
     const joinCookDataId = await addCookData ({
-        'user_id' : body.user_id,
+        'user_id' : userId.userId,
         'title' : body.title,
         'content' : body.content,
         'type' : body.type,
@@ -66,9 +66,9 @@ export const AddCook = async(body) => {
     return postResponseDTO(await getPost(joinCookDataId));
 }
 
-export const AddClean = async(body) => {
+export const AddClean = async(userId, body) => {
     const joinCleanDataId = await addCleanData ({
-        'user_id' : body.user_id,
+        'user_id' : userId.userId,
         'title' : body.title,
         'content' : body.content,
         'type' : body.type,
@@ -77,9 +77,9 @@ export const AddClean = async(body) => {
     return postResponseDTO(await getPost(joinCleanDataId));
 }
 
-export const AddStorage = async(body) => {
+export const AddStorage = async(userId, body) => {
     const joinStorageDataId = await addStorageData ({
-        'user_id' : body.user_id,
+        'user_id' : userId.userId,
         'title' : body.title,
         'content' : body.content,
         'type' : body.type,

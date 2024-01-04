@@ -28,7 +28,7 @@ app.use('/api-docs', SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
 app.use('/user', userRouter);
-app.use('/user/:userId', userRouter);
+app.use('/users/:userId', userRouter);
 //app.use('/health', healthRoute);
 
 
