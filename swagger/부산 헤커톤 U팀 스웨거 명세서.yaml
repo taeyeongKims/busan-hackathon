@@ -24,32 +24,22 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 회원가입
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
-              
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
+                
         '400':
           description: 잘못된 요청
           content:
@@ -88,7 +78,7 @@ paths:
                     example: COMMON000
                   message:
                     type: string
-                    example: 서버 에러, 관리자에게 문의 바랍니다.
+                    example: 서버 에러, 관리자에게 문의 바랍니다
   /user/login:
     post:
       tags:
@@ -111,31 +101,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 로그인
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -176,6 +156,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/law:
     post:
       tags:
@@ -204,31 +185,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 법률 게시글 작성 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -269,6 +240,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/interior:
     post:
       tags:
@@ -297,31 +269,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
-          content:
+          description: 인테리어 게시글 작성 성공
+         content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -393,31 +355,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 요리 게시글 작성 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -458,6 +410,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/clean:
     post:
       tags:
@@ -486,31 +439,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 청소 게시글 작성 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -580,31 +523,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 수납 게시글 작성 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -645,6 +578,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/law/{law_tag}:
     get:
       tags:
@@ -664,31 +598,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 법률 게시글 조회 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -729,6 +653,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/interior/{interior_tag}:
     get:
       tags:
@@ -748,31 +673,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 인테리어 게시글 조회 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -813,6 +728,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/cook/{cook_tag}:
     get:
       tags:
@@ -832,31 +748,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 요리 게시글 조회 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -897,6 +803,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/clean/{clean_tag}:
     get:
       tags:
@@ -916,31 +823,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 청소 게시글 조회 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
@@ -981,6 +878,7 @@ paths:
                   message:
                     type: string
                     example: 서버 에러, 관리자에게 문의 바랍니다.
+                    
   /users/{userId}/storage/{storage_tag}:
     get:
       tags:
@@ -1000,31 +898,21 @@ paths:
           
       responses:
         '200':
-          description: 미션 완료 변경 성공
+          description: 수납 게시글 조회 성공
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   status:
-                    type: integer
-                    example: 200
-                  isSuccess:
-                    type: boolean
-                    example: true
-                  code:
-                    type: integer
-                    example: 2000
-                  message:
                     type: string
-                    example: "success!"
-                  data:
-                    type: array
-                    example: {
-                      "missionDataStatus" : "진행 완료"
-                    }
-                    items:
-                      type: string
+                    example: "SwaggerTest1a"
+                  isSuccess:
+                    type: string
+                    example: "login1"
+                  code:
+                    type: string
+                    example: "sdkoa"
               
         '400':
           description: 잘못된 요청
