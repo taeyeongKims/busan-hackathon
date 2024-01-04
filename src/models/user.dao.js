@@ -188,9 +188,9 @@ export const getPost = async (postId) => {
 }
 
 export const getPostfromTag = async (tag) => {
-   // try {
+    //try {
         const conn = await pool.getConnection();
-
+        console.log(tag);
         const tagId = await pool.query(getTagId, tag);
         const postId = await pool.query(getPostIdfromHashId, tagId[0][0].id);
 
@@ -198,10 +198,8 @@ export const getPostfromTag = async (tag) => {
 
         for (let i = 0; i < postId.length; i++) {
         const post = await pool.query(getPostID, postId[0][i].post_id);
-        posts.push(post);
+        posts.push(post[0][0]);
         }
-
-        console.log(posts[1][0]);
 
 
         if(posts.length == 0){
@@ -212,6 +210,6 @@ export const getPostfromTag = async (tag) => {
         return posts;
         
     //} catch (err) {
-   //     throw new BaseError(status.PARAMETER_IS_WRONG);
+    //   throw new BaseError(status.PARAMETER_IS_WRONG);
     //}
 }
