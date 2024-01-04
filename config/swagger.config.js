@@ -9,7 +9,7 @@ const options = {
             version: '1.0.0',
             description: 'UMC Study API with express, API Ό³Έν'
         },
-        host: 'localhost:3000',
+        host: 'abc.umctestserver:3000',
         basepath: '../'
     },
     apis: ['./src/routes/*.js', './swagger/*']
