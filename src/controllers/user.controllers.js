@@ -41,7 +41,7 @@ export const userLogin = async (req, res, next) => {
     } 
     else {
         console.log("로그인에 성공하였습니다.");
-        return res.status(StatusCodes.OK).json({message: "로그인 성공"});
+        return res.send(StatusCodes.OK, loginUserData);
     }
 }
 
