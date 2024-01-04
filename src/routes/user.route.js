@@ -19,10 +19,10 @@ userRouter.post('/clean', asyncHandler(userAddClean));
 userRouter.post('/storage', asyncHandler(userAddStorage));
 
 userRouter.get('/law/:lawTag', asyncHandler(userReadLaw));
-userRouter.get('/interior', asyncHandler(userReadInterior));
-userRouter.get('/cook', asyncHandler(userReadCook));
-userRouter.get('/clean', asyncHandler(userReadClean));
-userRouter.get('/storage', asyncHandler(userReadStorage));
+userRouter.get('/interior/:interiorTag', asyncHandler(userReadInterior));
+userRouter.get('/cook/:cookTag', asyncHandler(userReadCook));
+userRouter.get('/clean/:cleanTag', asyncHandler(userReadClean));
+userRouter.get('/storage/:storageTag', asyncHandler(userReadStorage));
 
 //userRouter.get('/item', asyncHandler(userReadItem));
 
