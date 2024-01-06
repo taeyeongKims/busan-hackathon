@@ -5,9 +5,9 @@ import SwaggerJsdoc from "swagger-jsdoc";
 const options = {
     definition: {
         info: {
-            title: 'UMC Study API',
+            title: 'UMC hackathon API',
             version: '1.0.0',
-            description: 'UMC Study API with express, API ¼³¸í'
+            description: 'UMC hackathon API with express, API ï¿½ï¿½ï¿½ï¿½'
         },
         host: 'abc.umctestserver:3000',
         basepath: '../'
