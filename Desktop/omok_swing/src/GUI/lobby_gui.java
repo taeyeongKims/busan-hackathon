@@ -45,14 +45,13 @@ public class lobby_gui {
         enterButton.setOnAction(e -> {
             String selectedRoom = roomListView.getSelectionModel().getSelectedItem();
             if (selectedRoom != null) {
-                omokClient.selectedRoomNameToServer(selectedRoom);
-                omokClient.setRoomName(selectedRoom);
 
                 // 게임 화면으로 전환
                 ingame_gui ingame = new ingame_gui(omokClient, selectedRoom);
-                omokClient.startGame(ingame);  // 게임 시작 시 리스너 설정
-
+                omokClient.selectedRoomNameToServer(selectedRoom);
+                omokClient.setRoomName(selectedRoom);
                 ingame.start(primaryStage);
+
             } else {
                 showErrorDialog("Please select a room to join.");
             }
@@ -76,7 +75,6 @@ public class lobby_gui {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
 
     // 인스턴스 메서드로 수정
     public static void updateRoomList(String[] roomNames) {

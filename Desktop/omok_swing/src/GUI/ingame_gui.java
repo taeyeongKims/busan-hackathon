@@ -35,8 +35,8 @@ public class ingame_gui implements PlayerOrderListener {
     public ingame_gui(omok_client omokClient, String roomName) {
         this.omokClient = omokClient;
         this.roomName = roomName;
-        this.omokClient.setPlayerOrderListener(this); // 리스너 설정
-        this.omokClient.setInGameGui(this);
+        omokClient.setPlayerOrderListener(this); // 리스너 설정
+        omokClient.setInGameGui(this);
     }
 
 
@@ -56,10 +56,8 @@ public class ingame_gui implements PlayerOrderListener {
             int x = (int) event.getX() / CELL_SIZE;
             int y = (int) event.getY() / CELL_SIZE;
 
-            System.out.println("gui start, playerOrder = " + playerOrder);
             // 클릭된 위치에 돌을 놓는 코드
             omokClient.MoveStoneToServer(roomName, playerOrder, x, y);
-            updatePlayerMove(x, y);
         });
 
         // 레이아웃 설정: StackPane을 사용하여 Canvas를 중앙에 배치

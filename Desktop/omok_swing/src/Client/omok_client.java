@@ -29,18 +29,6 @@ public class omok_client {
     private String roomName;
     private boolean ready = false;
 
-    public void setInGameGui(ingame_gui inGameGui) {
-        this.inGameGui = inGameGui;
-    }
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    public String getRoomName() {
-        return roomName;
-    }
-
     public omok_client(String username) {
         try {
             // 서버 연결
@@ -59,6 +47,18 @@ public class omok_client {
                 System.exit(0);
             });
         }
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setInGameGui(ingame_gui inGameGui) {
+        this.inGameGui = inGameGui;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public void setPlayerOrderListener(PlayerOrderListener listener) {
@@ -80,7 +80,6 @@ public class omok_client {
             try {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    System.out.println("inputLine = " + inputLine);
                     handleServerMessage(inputLine);
                 }
             } catch (IOException e) {
@@ -110,28 +109,34 @@ public class omok_client {
 
     public void MoveStoneToServer(String roomName, int playerOrder, int x, int y) {
         out.println("MOVE:" + roomName + ":" + playerOrder + ":" + x + ":" + y);
-        System.out.println("MoveStoneToServer, playerOrder = " + playerOrder);
-        // 자기 돌을 놓은 후 바로 그리기 요청 (서버에서 성공적으로 처리되면 클라이언트 화면에도 반영)
-        Platform.runLater(() -> inGameGui.updatePlayerMove(x, y));
     }
 
     public synchronized void handleServerMessage(String message) {
         if (message.startsWith("PLAYER_ORDER:")) {
             playerOrder = handlePlayerOrder(message.substring("PLAYER_ORDER:".length()));
-            System.out.println("handleServerMessage, playerOrder = " + playerOrder);
             notifyPlayerOrderUpdated();
         } else if (message.startsWith("ROOM_LIST:")) {
             handleRoomList(message.substring("ROOM_LIST:".length()));
         } else if (message.startsWith("OPPONENT_MOVE:")) {
             handleMoveStone(message.substring("OPPONENT_MOVE:".length()));
+        } else if (message.startsWith("MOVE_CONFIRMED:")) {  // 서버가 움직임 확인
+            handleMoveConfirmed(message.substring("MOVE_CONFIRMED:".length()));
         } else if (message.startsWith("GAMEOVER:")) {
             handleGameOver(message.substring("GAMEOVER:".length()));
         } else if (message.startsWith("READY:")) {
             ready = true;
-        } else if (message.startsWith("ERROR:")) {
+        } else if (message.startsWith("ERROR:")) {  // 서버가 오류 응답
             handleError(message.substring("ERROR:".length()));
         }
     }
+
+    private void handleMoveConfirmed(String message) {
+        String[] parts = message.split(":");
+        int x = Integer.parseInt(parts[0]);
+        int y = Integer.parseInt(parts[1]);
+        Platform.runLater(() -> inGameGui.updatePlayerMove(x, y));  // 서버에서 확인된 경우만 돌 그리기
+    }
+
 
     public void handleRoomList(String roomListMessage) {
         roomNames = roomListMessage.split(",");
@@ -190,10 +195,5 @@ public class omok_client {
 
         String roomListMessage = "Room1,Room2,Room3";  // 예시로 받은 데이터
         handleRoomList(roomListMessage);  // 받은 데이터 처리
-    }
-
-    public void startGame(ingame_gui inGameGui) {
-        this.inGameGui = inGameGui;
-        setPlayerOrderListener(inGameGui); // 리스너 설정
     }
 }
