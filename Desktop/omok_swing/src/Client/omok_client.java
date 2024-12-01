@@ -192,6 +192,9 @@ public class omok_client {
         // 서버에 방 목록을 요청하는 로직
         // 예를 들어, 서버와 소켓을 통해 통신하여 방 목록을 요청할 수 있습니다.
         // 서버가 방 목록을 반환하면, 클라이언트에서 `handleRoomList()` 메서드를 호출하도록 합니다.
+        if (out != null) {
+            out.println("REQUEST_ROOM_LIST"); // 서버에 방 목록 요청
+        }
 
         String roomListMessage = "Room1,Room2,Room3";  // 예시로 받은 데이터
         handleRoomList(roomListMessage);  // 받은 데이터 처리

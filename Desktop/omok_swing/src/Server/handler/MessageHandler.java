@@ -1,6 +1,11 @@
 package Server.handler;
 
+import Server.omok_room;
+import Server.omok_roomManager;
+import Server.omok_server;
+
 import java.io.PrintWriter;
+import java.util.List;
 
 import static Server.omok_server.*;
 
@@ -13,10 +18,27 @@ public class MessageHandler {
             roomHandler.handleCreateRoom(message.substring("ROOMNAME_CREATED:".length()));
         } else if (message.startsWith("ROOMNAME_SELECTED:")) {
             roomHandler.handleSelectRoom(message.substring("ROOMNAME_SELECTED:".length()), userName);
+        } else if (message.equals("REQUEST_ROOM_LIST")) {  // 방 목록 요청
+            handleRoomListRequest(userName);
         } else if (message.startsWith("MOVE:")) {
             gameHandler.handleMove(message.substring("MOVE:".length()), userName);
         }
         return userName;
+    }
+
+    private void handleRoomListRequest(String userName) {
+        omok_roomManager roomManager = omok_server.roomManager;
+        List<omok_room> allRooms = roomManager.getAllRooms();
+
+        StringBuilder roomListMessage = new StringBuilder("ROOM_LIST:");
+        for (omok_room room : allRooms) {
+            roomListMessage.append(room.getName()).append(",");
+        }
+
+        ClientHandler client = ClientHandler.findClientHandlerByUsername(userName);
+        if (client != null) {
+            messageHandler.sendMessageToClient(client.out, roomListMessage.toString());
+        }
     }
 
     private String handleUsernameMessage(String username) {
