@@ -1,19 +1,19 @@
 package Server.handler;
 
-import Server.omok_room;
+import Server.OmokRoom;
 
 import java.util.List;
 
-import static Server.omok_server.*;
+import static Server.OmokServer.*;
 
 public class RoomHandler {
     void handleCreateRoom(String roomname) {
         System.out.println("Created roomname: " + roomname);
         roomManager.createRoom(roomname);
 
-        List<omok_room> allRooms = roomManager.getAllRooms();
+        List<OmokRoom> allRooms = roomManager.getAllRooms();
         StringBuilder roomListMessage = new StringBuilder("ROOM_LIST:");
-        for (omok_room room : allRooms) {
+        for (OmokRoom room : allRooms) {
             roomListMessage.append(room.getName()).append(",");
         }
         messageHandler.sendMessageToAllClients(roomListMessage.toString());
@@ -22,7 +22,7 @@ public class RoomHandler {
 
     void handleSelectRoom(String roomName, String userName) {
         System.out.println("Selected roomname : " + roomName);
-        omok_room selectedRoom = roomManager.findRoomByName(roomName);
+        OmokRoom selectedRoom = roomManager.findRoomByName(roomName);
         int playerOrder = selectedRoom.addPlayer(userName);
         ClientHandler client = ClientHandler.findClientHandlerByUsername(userName);
 

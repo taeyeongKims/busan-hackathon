@@ -1,6 +1,6 @@
 package GUI;
 
-import Client.omok_client;
+import Client.OmokClient;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,11 +8,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class lobby_gui {
-    private omok_client omokClient;
+public class LobbyGui {
+    private OmokClient omokClient;
     private static ListView<String> roomListView;
 
-    public lobby_gui(omok_client omokClient) {
+    public LobbyGui(OmokClient omokClient) {
         this.omokClient = omokClient;
     }
 
@@ -47,7 +47,7 @@ public class lobby_gui {
             if (selectedRoom != null) {
 
                 // 게임 화면으로 전환
-                ingame_gui ingame = new ingame_gui(omokClient, selectedRoom);
+                IngameGui ingame = new IngameGui(omokClient, selectedRoom);
                 omokClient.selectedRoomNameToServer(selectedRoom);
                 omokClient.setRoomName(selectedRoom);
                 ingame.start(primaryStage);
@@ -93,9 +93,9 @@ public class lobby_gui {
     }
 
     // 로비 화면을 보여주는 메서드
-    public static void showLobby(omok_client client) {
+    public static void showLobby(OmokClient client) {
         Stage primaryStage = new Stage();
-        lobby_gui lobby = new lobby_gui(client);
+        LobbyGui lobby = new LobbyGui(client);
         lobby.start(primaryStage);
     }
 }

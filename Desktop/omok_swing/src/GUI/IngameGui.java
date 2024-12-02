@@ -1,7 +1,7 @@
 package GUI;
 
 import Client.PlayerOrderListener;
-import Client.omok_client;
+import Client.OmokClient;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,9 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class ingame_gui implements PlayerOrderListener {
+public class IngameGui implements PlayerOrderListener {
 
-    private omok_client omokClient;
+    private OmokClient omokClient;
     private Canvas canvas;
     private int playerOrder;  // 0이면 흑, 1이면 백
     private String roomName;
@@ -32,7 +32,7 @@ public class ingame_gui implements PlayerOrderListener {
     private static final int CELL_SIZE = 30; // 각 셀의 크기
     private static final int BOARD_SIZE = 19; // 19x19 바둑판
 
-    public ingame_gui(omok_client omokClient, String roomName) {
+    public IngameGui(OmokClient omokClient, String roomName) {
         this.omokClient = omokClient;
         this.roomName = roomName;
         omokClient.setPlayerOrderListener(this); // 리스너 설정
@@ -131,9 +131,9 @@ public class ingame_gui implements PlayerOrderListener {
     }
 
     // 로비로 돌아가는 메서드
-    public void goToLobby(omok_client client) {
+    public void goToLobby(OmokClient client) {
         Platform.runLater(() -> {
-            lobby_gui.showLobby(client); // 로비 화면으로 돌아가기
+            LobbyGui.showLobby(client); // 로비 화면으로 돌아가기
         });
     }
 }

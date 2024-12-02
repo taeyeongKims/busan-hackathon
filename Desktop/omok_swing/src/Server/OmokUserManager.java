@@ -3,10 +3,10 @@ package Server;
 import java.util.HashMap;
 import java.util.Map;
 
-public class omok_userManager {
+public class OmokUserManager {
     private Map<String, UserStats> userStatsMap;
 
-    public omok_userManager() {
+    public OmokUserManager() {
         userStatsMap = new HashMap<>();
     }
 
@@ -72,4 +72,3 @@ public class omok_userManager {
         }
     }
 }
-

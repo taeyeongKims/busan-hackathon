@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import static Server.omok_server.clients;
-import static Server.omok_server.messageHandler;
+import static Server.OmokServer.clients;
+import static Server.OmokServer.messageHandler;
 
 // 각 클라이언트를 처리하는 스레드
 public class ClientHandler extends Thread {

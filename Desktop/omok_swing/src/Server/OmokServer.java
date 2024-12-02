@@ -11,13 +11,13 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class omok_server {
+public class OmokServer {
     private static final int PORT = 12345;
 
     public static Set<ClientHandler> clients = new HashSet<>();
-    public static omok_userManager userManager = new omok_userManager();
-    public static omok_roomManager roomManager = new omok_roomManager();
-    public static Set<omok_gameBoard> gameLogics = new HashSet<>();
+    public static OmokUserManager userManager = new OmokUserManager();
+    public static OmokRoomManager roomManager = new OmokRoomManager();
+    public static Set<OmokGameBoard> gameLogics = new HashSet<>();
     public static GameHandler gameHandler = new GameHandler();
     public static MessageHandler messageHandler = new MessageHandler();
     public static RoomHandler roomHandler = new RoomHandler();

@@ -1,12 +1,12 @@
 package Server;
 
-public class omok_gameBoard {
+public class OmokGameBoard {
     private int[][] board;  // 2차원 배열로 보드 상태 표현
     private static final int BOARD_SIZE = 19;
     private static final int WINNING_CONDITION = 5;
 
 
-    public omok_gameBoard() {
+    public OmokGameBoard() {
         initializeBoard();
     }
 

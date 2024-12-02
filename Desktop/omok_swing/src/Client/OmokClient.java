@@ -1,8 +1,8 @@
 package Client;
 
-import GUI.ingame_gui;
-import GUI.lobby_gui;
-import GUI.login_gui;
+import GUI.IngameGui;
+import GUI.LobbyGui;
+import GUI.LoginGui;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class omok_client {
+public class OmokClient {
 
     private static final String SERVER_ADDRESS = "localhost"; // 서버 주소
     private static final int SERVER_PORT = 12345; // 서버 포트
@@ -25,11 +25,11 @@ public class omok_client {
     private int opponentMovePlayerOrder;
     private int opponentMoveX;
     private int opponentMoveY;
-    private ingame_gui inGameGui;
+    private IngameGui inGameGui;
     private String roomName;
     private boolean ready = false;
 
-    public omok_client(String username) {
+    public OmokClient(String username) {
         try {
             // 서버 연결
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
@@ -43,7 +43,7 @@ public class omok_client {
         } catch (IOException e) {
             System.err.println("Failed to connect to server: " + e.getMessage());
             Platform.runLater(() -> {
-                login_gui.showErrorDialog("서버에 연결할 수 없습니다. 프로그램을 종료합니다.");
+                LoginGui.showErrorDialog("서버에 연결할 수 없습니다. 프로그램을 종료합니다.");
                 System.exit(0);
             });
         }
@@ -53,7 +53,7 @@ public class omok_client {
         return roomName;
     }
 
-    public void setInGameGui(ingame_gui inGameGui) {
+    public void setInGameGui(IngameGui inGameGui) {
         this.inGameGui = inGameGui;
     }
 
@@ -85,7 +85,7 @@ public class omok_client {
             } catch (IOException e) {
                 System.err.println("Connection lost: " + e.getMessage());
                 Platform.runLater(() -> {
-                    login_gui.showErrorDialog("서버와의 연결이 끊어졌습니다. 프로그램을 종료합니다.");
+                    LoginGui.showErrorDialog("서버와의 연결이 끊어졌습니다. 프로그램을 종료합니다.");
                     System.exit(0);
                 });
             }
@@ -142,7 +142,7 @@ public class omok_client {
         roomNames = roomListMessage.split(",");
         Platform.runLater(() -> {
             // 로비 GUI 업데이트
-            lobby_gui.updateRoomList(roomNames);  // 이렇게 정적 메서드를 호출합니다.
+            LobbyGui.updateRoomList(roomNames);  // 이렇게 정적 메서드를 호출합니다.
         });
     }
 

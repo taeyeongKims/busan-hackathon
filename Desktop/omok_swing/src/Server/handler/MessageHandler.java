@@ -1,13 +1,13 @@
 package Server.handler;
 
-import Server.omok_room;
-import Server.omok_roomManager;
-import Server.omok_server;
+import Server.OmokRoom;
+import Server.OmokRoomManager;
+import Server.OmokServer;
 
 import java.io.PrintWriter;
 import java.util.List;
 
-import static Server.omok_server.*;
+import static Server.OmokServer.*;
 
 public class MessageHandler {
     public String handleClientMessage(String message, String userName) {
@@ -27,11 +27,11 @@ public class MessageHandler {
     }
 
     private void handleRoomListRequest(String userName) {
-        omok_roomManager roomManager = omok_server.roomManager;
-        List<omok_room> allRooms = roomManager.getAllRooms();
+        OmokRoomManager roomManager = OmokServer.roomManager;
+        List<OmokRoom> allRooms = roomManager.getAllRooms();
 
         StringBuilder roomListMessage = new StringBuilder("ROOM_LIST:");
-        for (omok_room room : allRooms) {
+        for (OmokRoom room : allRooms) {
             roomListMessage.append(room.getName()).append(",");
         }
 

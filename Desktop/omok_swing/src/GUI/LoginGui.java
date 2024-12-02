@@ -1,13 +1,13 @@
 package GUI;
 
-import Client.omok_client;
+import Client.OmokClient;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class login_gui extends Application {
+public class LoginGui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -24,11 +24,11 @@ public class login_gui extends Application {
             if (username.isEmpty()) {
                 showErrorDialog("Username cannot be empty!");
             } else {
-                omok_client client = new omok_client(username);
+                OmokClient client = new OmokClient(username);
                 client.sendUsernameToServer(username);
 
                 // 로비로 전환
-                lobby_gui lobby = new lobby_gui(client);
+                LobbyGui lobby = new LobbyGui(client);
                 lobby.start(primaryStage);
             }
         });

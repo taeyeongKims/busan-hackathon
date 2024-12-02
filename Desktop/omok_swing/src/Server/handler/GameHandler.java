@@ -1,9 +1,9 @@
 package Server.handler;
 
-import Server.omok_gameBoard;
-import Server.omok_room;
+import Server.OmokGameBoard;
+import Server.OmokRoom;
 
-import static Server.omok_server.*;
+import static Server.OmokServer.*;
 
 public class GameHandler {
     public void handleMove(String message, String userName) {
@@ -16,7 +16,7 @@ public class GameHandler {
         int y = Integer.parseInt(parts[3]);
 
         // roomID에 해당하는 gameLogic을 찾아 돌을 둔다
-        omok_gameBoard gameBoard = findGameBoardByRoomName(roomName);
+        OmokGameBoard gameBoard = findGameBoardByRoomName(roomName);
         if (gameBoard != null) {
             if (!gameBoard.isValidMove(x, y)) {
                 ClientHandler player = ClientHandler.findClientHandlerByUsername(userName);
@@ -29,7 +29,7 @@ public class GameHandler {
             sendOpponentMoveUpdate(userName, roomName, playerOrder, x, y);
 
             if (gameBoard.checkWin(x, y, playerOrder)) {
-                omok_room room = roomManager.findRoomByName(roomName);
+                OmokRoom room = roomManager.findRoomByName(roomName);
                 String winPlayerName = room.getPlayerName(playerOrder);
                 for (String playerName : room.getPlayers()) {
                     ClientHandler player = ClientHandler.findClientHandlerByUsername(playerName);
@@ -41,9 +41,9 @@ public class GameHandler {
         }
     }
 
-    private omok_gameBoard findGameBoardByRoomName(String roomName) {
+    private OmokGameBoard findGameBoardByRoomName(String roomName) {
         // roomID에 해당하는 gameLogic을 찾아 반환
-        omok_room room = roomManager.findRoomByName(roomName);
+        OmokRoom room = roomManager.findRoomByName(roomName);
         if (room != null) {
             // 방에 연결된 게임 로직 반환
             return room.getGameBoard();
@@ -54,7 +54,7 @@ public class GameHandler {
 
     private void sendOpponentMoveUpdate(String myName, String roomName, int playerOrder, int x, int y) {
         // 해당 방에 속한 다른 플레이어에게 메시지 전송 로직 추가
-        omok_room room = roomManager.findRoomByName(roomName);
+        OmokRoom room = roomManager.findRoomByName(roomName);
         if (room != null) {
             // 방에 속한 모든 플레이어에게 메시지 전송
             for (String playerName : room.getPlayers()) {

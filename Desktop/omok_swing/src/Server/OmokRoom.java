@@ -3,18 +3,18 @@ package Server;
 import java.util.ArrayList;
 import java.util.List;
 
-public class omok_room {
+public class OmokRoom {
     private static final int MAX_PLAYERS = 2;
 
     private String roomname;
     private List<String> players;
-    private omok_gameBoard gameBoard;
+    private OmokGameBoard gameBoard;
     private boolean player1Ready;
     private boolean player2Ready;
-    public omok_room(String roomname) {
+    public OmokRoom(String roomname) {
         this.roomname = roomname;
         this.players = new ArrayList<>();
-        this.gameBoard = new omok_gameBoard();
+        this.gameBoard = new OmokGameBoard();
         this.player1Ready = false;
         this.player2Ready = false;
     }
@@ -23,7 +23,7 @@ public class omok_room {
         return roomname;
     }
 
-    public omok_gameBoard getGameBoard() {
+    public OmokGameBoard getGameBoard() {
         return gameBoard;
     }
 
