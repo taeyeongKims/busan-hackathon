@@ -41,6 +41,7 @@ public class LoginGui extends Application {
         primaryStage.show();
     }
 
+//  에러 Dialog를 보여주는 메서드
     public static void showErrorDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

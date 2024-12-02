@@ -49,23 +49,28 @@ public class OmokClient {
         }
     }
 
+//    게임방 이름 가져오기
     public String getRoomName() {
         return roomName;
     }
 
+//    클라이언트가 들어간 방의 게임GUI 세팅
     public void setInGameGui(IngameGui inGameGui) {
         this.inGameGui = inGameGui;
     }
 
+//    게임방 이름 정하기
     public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
 
+//    IngameGui를 client의 리스너로 세팅하기
     public void setPlayerOrderListener(PlayerOrderListener listener) {
         playerOrderListener = listener;
         System.out.println("listener = " + listener);
     }
 
+//    리스너가 생기면 IngameGui에 클라이언트의 번호 세팅하기
     private void notifyPlayerOrderUpdated() {
         if (playerOrderListener != null) {
             System.out.println("notifyPlayerOrderUpdated, playerOrder = " + playerOrder); // 로그 추가
@@ -75,6 +80,7 @@ public class OmokClient {
         }
     }
 
+//    서버의 응답을 받는 메서드
     private void startServerListener() {
         new Thread(() -> {
             try {
@@ -92,25 +98,30 @@ public class OmokClient {
         }).start();
     }
 
+//    사용자의 이름을 서버로 전송
     public synchronized void sendUsernameToServer(String username) {
         if (out != null) {
             out.println("USERNAME:" + username);
         }
     }
 
+//    서버에 게임방을 만든다는 요청 보내기
     public void createdRoomNameToServer(String roomName) {
         out.println("ROOMNAME_CREATED:" + roomName);
     }
 
+//    서버에 게임방을 선택했다는 요청 보내기
     public void selectedRoomNameToServer(String roomName) {
         this.roomName = roomName;
         out.println("ROOMNAME_SELECTED:" + roomName);
     }
 
+//    서버에 바둑돌을 놓았다는 요청 보내기
     public void MoveStoneToServer(String roomName, int playerOrder, int x, int y) {
         out.println("MOVE:" + roomName + ":" + playerOrder + ":" + x + ":" + y);
     }
 
+//    서버의 응답 메세지를 처리하는 핸들링 메서드
     public synchronized void handleServerMessage(String message) {
         if (message.startsWith("PLAYER_ORDER:")) {
             playerOrder = handlePlayerOrder(message.substring("PLAYER_ORDER:".length()));
@@ -130,6 +141,7 @@ public class OmokClient {
         }
     }
 
+//    바둑돌을 놓을 수 있는 곳일 때, 바둑돌을 놓는 메서드
     private void handleMoveConfirmed(String message) {
         String[] parts = message.split(":");
         int x = Integer.parseInt(parts[0]);
@@ -137,7 +149,7 @@ public class OmokClient {
         Platform.runLater(() -> inGameGui.updatePlayerMove(x, y));  // 서버에서 확인된 경우만 돌 그리기
     }
 
-
+//    게임방 리스트를 업데이트하는 메서드
     public void handleRoomList(String roomListMessage) {
         roomNames = roomListMessage.split(",");
         Platform.runLater(() -> {
@@ -145,7 +157,7 @@ public class OmokClient {
             LobbyGui.updateRoomList(roomNames);  // 이렇게 정적 메서드를 호출합니다.
         });
     }
-
+// 플레이어의 번호를 반환하는 메서드
     public int handlePlayerOrder(String message) {
         try {
             return Integer.parseInt(message);
@@ -154,15 +166,15 @@ public class OmokClient {
             return -1;
         }
     }
-
+// 플레이어의 번호를 얻는 메서드
     public int getPlayerOrder() {
         return playerOrder;
     }
-
+// 게임방 리스트를 얻는 메서드
     public String[] getRoomList() {
         return roomNames != null ? roomNames : new String[0];
     }
-
+// 상대방이 돌을 놓을 때, 서버에서 보내는 요청을 해들링하는 메서드
     public void handleMoveStone(String message) {
         if (ready) {
             String[] parts = message.split(":");
@@ -174,7 +186,7 @@ public class OmokClient {
             Platform.runLater(() -> inGameGui.updateOpponentMove(opponentMovePlayerOrder, opponentMoveX, opponentMoveY));
         }
     }
-
+// 게임 오버 핸들링 메서드
     public void handleGameOver(String message) {
         String winPlayerName = message;
         Platform.runLater(() -> {
@@ -183,7 +195,7 @@ public class OmokClient {
         });
         ready = false;
     }
-
+// 로직상 에러가 생겼을 때, 에러 박스가 뜨게 만드는 메서드
     public void handleError(String message) {
         Platform.runLater(() -> inGameGui.showErrorMsg());
     }
