@@ -1,15 +1,18 @@
 package hackathon.busan.controller;
 
+import hackathon.busan.dto.request.MissionDetailRequest;
 import hackathon.busan.dto.request.MissionInfoRequest;
 import hackathon.busan.dto.request.MissionUserInfoRequest;
 import hackathon.busan.dto.response.AchievementDetailResponse;
 import hackathon.busan.dto.response.AchievementListResponse;
 import hackathon.busan.dto.response.MissionDetailResponse;
 import hackathon.busan.dto.response.MissionListResponse;
+import hackathon.busan.entity.Location;
 import hackathon.busan.service.AchievementService;
 import hackathon.busan.service.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +34,17 @@ public class MissionController {
     }
 
     @Operation(summary = "미션 생성")
-    @PostMapping("/create")
-    public ResponseEntity<MissionDetailResponse> createMission(@RequestBody MissionInfoRequest request) {
-        missionService.createMission(request);
-        return ResponseEntity.ok(missionService.createMission(request));
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MissionDetailResponse> createMission(@ModelAttribute MissionDetailRequest request) {
+        Location location = request.getLocationAsObject();
+        MissionDetailResponse result = missionService.createMission(new MissionInfoRequest(
+                request.getUserId(),
+                request.getTitle(),
+                request.getContent(),
+                request.getCategories(),
+                request.getImages(),
+                location));
+        return ResponseEntity.ok(result);
     }
 
     @Operation(summary = "미션 상세 조회")

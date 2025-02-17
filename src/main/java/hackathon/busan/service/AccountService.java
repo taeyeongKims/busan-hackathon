@@ -7,19 +7,22 @@ import hackathon.busan.entity.Account;
 import hackathon.busan.entity.Location;
 import hackathon.busan.repository.AccountRepository;
 import hackathon.busan.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.TypeRegistration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final LocationRepository locationRepository;
 
     public AccountUserInfoResponse loginAccount(AccountLoginRequest request) {
-        Account user = accountRepository.findByLoginIdAndPassword(request.loginId(), request.password());
+        Account user = accountRepository.findByLoginId(request.loginId()).orElseThrow();
         Account account = accountRepository.save(user);
 
         return new AccountUserInfoResponse(account.getId(), account.getNickname(),

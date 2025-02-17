@@ -14,7 +14,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findById(Long id);
 
-    Account findByLoginIdAndPassword(String loginId, String password);
+    Optional<Account> findByLoginId(String loginId);
 
     @Query("SELECT a.profile FROM Account a WHERE a.id = :accountId")
     Optional<String> findProfileImageByAccountId(@Param("accountId") Long accountId);

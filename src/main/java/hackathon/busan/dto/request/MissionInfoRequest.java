@@ -9,7 +9,7 @@ public record MissionInfoRequest(
         Long userId,
         String title,
         String content,
-        List<String>category,
+        List<String> category,
         List<MultipartFile> image,
         Location location
 ) {

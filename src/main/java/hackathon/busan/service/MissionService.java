@@ -1,5 +1,6 @@
 package hackathon.busan.service;
 
+import hackathon.busan.dto.request.MissionDetailRequest;
 import hackathon.busan.dto.request.MissionInfoRequest;
 import hackathon.busan.dto.request.MissionUserInfoRequest;
 import hackathon.busan.dto.response.MissionDetailResponse;
@@ -11,6 +12,7 @@ import hackathon.busan.entity.*;
 import hackathon.busan.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MissionService {
     private final S3Service s3Service;
     private final MissionRepository missionRepository;
@@ -30,6 +33,8 @@ public class MissionService {
     private final MissionScrapRepository missionScrapRepository;
     private final AchievementRepository achievementRepository;
     private final MissionProgressRepository progressRepository;
+    private final MissionCategoryRepository missionCategoryRepository;
+    private final ImageRepository imageRepository;
 
     // 불평등 동네
     private Set<String> priSet = new HashSet<>(Arrays.asList("북구", "사상구", "서구", "동구", "중구", "영도구", "사하구", "강서구"));
@@ -99,13 +104,19 @@ public class MissionService {
                 .map(c -> categoryRepository.findByName(c))
                 .collect(Collectors.toList());
 
-
         Mission mission = new Mission(account, categories, location, request.title(), request.content());
         List<String> categoriesName = mission.getCategories().stream()
                 .map(c -> c.getName())
                 .collect(Collectors.toList());
         // 이미지 저장
         Mission savedMission = missionRepository.save(mission);
+
+        // 미션,카테고리 매핑 저장
+        List<MissionCategory> missionCategories = categories.stream().map(
+                category -> new MissionCategory(savedMission, category)
+        ).collect(Collectors.toList());
+        missionCategoryRepository.saveAll(missionCategories);
+
         List<String> urls = s3Service.uploadMission(new UploadMissionRequest(request.userId(), savedMission.getId(), request.image()));
 
         Long applyNumber = progressRepository.countByMission(mission);
@@ -133,10 +144,12 @@ public class MissionService {
                 .map(c -> c.getName())
                 .collect(Collectors.toList());
 
+        List<String> urls = imageRepository.findUrlsByAccountIdAndMissionId(mission.getAccount().getId(), missionId);
+
         return new MissionDetailResponse(mission.getId(), mission.getAccount().getId(), mission.getAccount().getNickname(),
                 mission.getTitle(), mission.getContent(), progressRepository.countByMission(mission),
                 formatDate(mission.getCreatedDate()), achievementRepository.countByMission(mission),
-                categories, null);
+                categories, urls);
     }
 
     // 미션 찜하기
