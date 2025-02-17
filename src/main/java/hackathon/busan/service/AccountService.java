@@ -32,17 +32,17 @@ public class AccountService {
     }
 
     public void registerAccount(AccountRegisterRequest request) {
-        Location location;
-        if(locationRepository.existsByZipcode(request.location().getZipcode())) {
-            location = locationRepository.findByZipcode(request.location().getZipcode());
-        } else {
-            location = new Location(request.location().getZipcode(), request.location().getAddress(), request.location().getDetailAddress(),
-                    request.location().getSido(), request.location().getSigugun(), request.location().getDong());
+//        Location location;
+//        if(locationRepository.existsByZipcode(request.location().getZipcode())) {
+//            location = locationRepository.findByZipcode(request.location().getZipcode());
+//        } else {
+//            location = new Location(request.location().getZipcode(), request.location().getAddress(), request.location().getDetailAddress(),
+//                    request.location().getSido(), request.location().getSigugun(), request.location().getDong());
+//
+//            locationRepository.save(location); // 위치 저장
+//        }
 
-            locationRepository.save(location); // 위치 저장
-        }
-
-        Account account = new Account(location, request.loginId(), passwordEncoder.encode(request.password()), request.nickname());
+        Account account = new Account(null, request.loginId(), passwordEncoder.encode(request.password()), request.nickname());
 
         accountRepository.save(account);
 

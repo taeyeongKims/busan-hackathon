@@ -1,5 +1,6 @@
 package hackathon.busan.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hackathon.busan.entity.Location;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class MissionDetailRequest {
     private String dong;
 
     // Location 객체로 변환하는 메서드
+    @JsonIgnore
     public Location getLocationAsObject() {
         return new Location(zipcode, address, detailAddress, sido, sigugun, dong);
     }
