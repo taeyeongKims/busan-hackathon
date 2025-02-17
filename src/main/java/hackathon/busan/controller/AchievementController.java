@@ -12,18 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/achievement")
 public class AchievementController {
-    @GetMapping("/{missionId}")
-    public ResponseEntity<AchievementDetailResponse> getAchievement(
-            @PathVariable final Long missionId
-    ) {
-        return ResponseEntity.ok(new AchievementDetailResponse(null, null, null, null, null,null, null, null));
-    }
-
     @PostMapping()
     public ResponseEntity<AchievementDetailResponse> postAchievement(
             @RequestBody final AchievementDetailRequest achievementDetailRequest
     ) {
-        return ResponseEntity.ok(new AchievementDetailResponse(null, null, null, null, null,null, null, null));
+        return ResponseEntity.ok(new AchievementDetailResponse(null, null, null, null, null, null,null, null, null));
     }
 
     @PostMapping("/scrap")
@@ -44,7 +37,7 @@ public class AchievementController {
     public ResponseEntity<ScrapAchievementListResponse> getLikeAchievement(
             @PathVariable final Long userId
     ) {
-        AchievementDetailResponse response = new AchievementDetailResponse(null, null, null, null, null, null, null, null);
+        AchievementDetailResponse response = new AchievementDetailResponse(null, null, null, null, null, null, null, null, null);
         List<AchievementDetailResponse> result = List.of(response);
         return ResponseEntity.ok(new ScrapAchievementListResponse(result));
     }
