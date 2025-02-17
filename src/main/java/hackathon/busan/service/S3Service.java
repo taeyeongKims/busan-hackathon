@@ -46,7 +46,7 @@ public class S3Service {
 
         String key = generateProfileName(request);
         String path = uploadToS3(new S3UploadRequest(request.multipartFile(), key));
-        accountRepository.updateProfileImageByAccountId(key, request.userId());     // S3 업로드 이후 사용자 테이블 프로필 값 업데이트
+        accountRepository.updateProfileImageByAccountId(path, request.userId());     // S3 업로드 이후 사용자 테이블 프로필 값 업데이트
 
         return new UploadProfileResponse(path);
     }
