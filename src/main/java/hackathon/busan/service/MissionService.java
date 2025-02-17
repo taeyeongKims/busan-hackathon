@@ -79,7 +79,7 @@ public class MissionService {
 
         List<MissionInfoResponse> responses = missionList.stream()
                 .map(m -> new MissionInfoResponse(m.getId(), m.getAccount().getId(), m.getAccount().getNickname(),
-                        m.getTitle(), null, missionScrapRepository.countByMission(m), achievementRepository.countByMission(m),
+                        m.getTitle(), imageUrl(m, m.getAccount()), missionScrapRepository.countByMission(m), achievementRepository.countByMission(m),
                         formatDate(m.getCreatedDate())))
                 .collect(Collectors.toList());
 
@@ -184,9 +184,10 @@ public class MissionService {
                 .orElseThrow();
 
         List<MissionScrap> scrapList = missionScrapRepository.findAllByAccount(account);
+
         List<MissionInfoResponse> responses = scrapList.stream()
                 .map(ms -> new MissionInfoResponse(ms.getMission().getId(), ms.getMission().getAccount().getId(), ms.getMission().getAccount().getNickname(),
-                        ms.getMission().getTitle(), null,
+                        ms.getMission().getTitle(), imageUrl(ms.getMission(), ms.getMission().getAccount()),
                         missionScrapRepository.countByMission(ms.getMission()), achievementRepository.countByMission(ms.getMission()),
                         formatDate(ms.getMission().getCreatedDate())))
                 .collect(Collectors.toList());
@@ -204,6 +205,30 @@ public class MissionService {
 
         MissionProgress progress = new MissionProgress(account, mission);
         progressRepository.save(progress);
+    }
+
+    public MissionListResponse getAchievementList(Long userId) {
+        Account account = accountRepository.findById(userId)
+                .orElseThrow();
+
+        List<MissionProgress> achievements = progressRepository.findByAccountAndStatus(account, MissionStatus.IN_PROGRESS);
+
+        List<MissionInfoResponse> responses = achievements.stream()
+                .map(ach -> new MissionInfoResponse(ach.getId(), ach.getAccount().getId(), ach.getAccount().getNickname(),
+                        ach.getMission().getTitle(), imageUrl(ach.getMission(), ach.getMission().getAccount()), missionScrapRepository.countByMission(ach.getMission()), achievementRepository.countByMission(ach.getMission()),
+                        formatDate(ach.getMission().getCreatedDate())))
+                .collect(Collectors.toList());
+
+        return new MissionListResponse(responses);
+    }
+
+    private String imageUrl(Mission mission, Account account) {
+        List<String> urls = imageRepository.findUrlsByAccountIdAndMissionId(account.getId(), mission.getId());
+        if (!urls.isEmpty()) {
+            return urls.get(0);  // 첫 번째 값 전송
+        } else {
+            return null; // 데이터가 없을 때 처리
+        }
     }
 
     private String formatDate(LocalDateTime time) {

@@ -47,4 +47,10 @@ public class AchievementController {
     ) {
         return ResponseEntity.ok(achievementService.getLikeAchievement(userId));
     }
+
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getAchievementList(@PathVariable("userId") Long userId) {
+        return null;
+    }
 }
