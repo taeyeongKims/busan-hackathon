@@ -18,4 +18,5 @@ public class Account extends BaseEntity{
     private Long missionCount;
     private Long achievementCount;
     private Long point;
+    private String profile;
 }
