@@ -6,6 +6,7 @@ import hackathon.busan.dto.response.MissionDetailResponse;
 import hackathon.busan.dto.response.MissionInfoResponse;
 import hackathon.busan.dto.response.MissionListResponse;
 import hackathon.busan.dto.response.ScrapMissionListResponse;
+import hackathon.busan.dto.s3Dto.UploadMissionRequest;
 import hackathon.busan.entity.*;
 import hackathon.busan.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MissionService {
-
+    private final S3Service s3Service;
     private final MissionRepository missionRepository;
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
@@ -43,7 +44,7 @@ public class MissionService {
     }
 
     // 미션 생성
-    public void createMission(MissionInfoRequest request) {
+    public MissionDetailResponse createMission(MissionInfoRequest request) {
         Location location = new Location(request.location().getZipcode(), request.location().getAddress(), request.location().getDetailAddress(),
                 request.location().getSido(), request.location().getSigugun(), request.location().getDong());
 
@@ -59,9 +60,30 @@ public class MissionService {
         List<Category> categories = request.category().stream()
                 .map(c -> categoryRepository.findByName(c))
                 .collect(Collectors.toList());
-        Mission mission = new Mission(account, categories, location, request.title(), request.content());
 
-        missionRepository.save(mission); // 미션 저장
+
+        Mission mission = new Mission(account, categories, location, request.title(), request.content());
+        List<String> categoriesName = mission.getCategories().stream()
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
+        // 이미지 저장
+        Mission savedMission = missionRepository.save(mission);
+        List<String> urls = s3Service.uploadMission(new UploadMissionRequest(request.userId(), savedMission.getId(), request.image()));
+
+        Long applyNumber = progressRepository.countByMission(mission);
+        Long achievementNumber = achievementRepository.countByMission(mission);
+        return new MissionDetailResponse(
+                savedMission.getId(),
+                account.getId(),
+                account.getNickname(),
+                mission.getTitle(),
+                mission.getContent(),
+                applyNumber,
+                formatDate(mission.getCreatedDate()),
+                achievementNumber,
+                categoriesName,
+                urls
+        );
     }
 
     // 미션 상세 조회

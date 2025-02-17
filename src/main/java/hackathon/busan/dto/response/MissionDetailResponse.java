@@ -1,6 +1,5 @@
 package hackathon.busan.dto.response;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record MissionDetailResponse(
@@ -13,7 +12,7 @@ public record MissionDetailResponse(
 
         Long applyNumber,
         String date,
-        Long acheivementNumber,
+        Long achievementNumber,
 
         List<String>categoryList,
         List<String> imageList

@@ -29,9 +29,9 @@ public class MissionController {
 
     @Operation(summary = "미션 생성")
     @PostMapping("/create")
-    public ResponseEntity<?> createMission(@RequestBody MissionInfoRequest request) {
+    public ResponseEntity<MissionDetailResponse> createMission(@RequestBody MissionInfoRequest request) {
         missionService.createMission(request);
-        return ResponseEntity.ok("미션을 등록하였습니다.");
+        return ResponseEntity.ok(missionService.createMission(request));
     }
 
     @Operation(summary = "미션 상세 조회")
