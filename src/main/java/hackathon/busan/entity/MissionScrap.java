@@ -19,4 +19,9 @@ public class MissionScrap extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Mission mission;
+
+    public MissionScrap(Account account, Mission mission) {
+        this.account = account;
+        this.mission = mission;
+    }
 }

@@ -8,9 +8,9 @@ public record MissionInfoResponse(
         String nickname,
         String title,
         String image,
-        Integer scrapNumber,
-        Integer applyNumber,
-        Integer acheivementNumber,
-        LocalDateTime date
+        Long scrapNumber,
+        //Long applyNumber,
+        Long acheivementNumber,
+        String date
 ) {
 }

@@ -25,4 +25,9 @@ public class MissionProgress extends BaseEntity {
     public void setStatusCompleted() {
         this.status = MissionStatus.COMPLETED;
     }
+
+    public MissionProgress(Account account, Mission mission) {
+        this.account = account;
+        this.mission = mission;
+    }
 }

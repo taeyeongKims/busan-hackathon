@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,8 +58,7 @@ public class AchievementService {
                 savedAchievement.getContent(),
                 urls,
                 savedAchievement.getLikeCount(),
-                savedAchievement.getCreatedDate(),
-                savedAchievement.getUpdatedDate()
+                formatDate(savedAchievement.getCreatedDate())
         );
     }
 
@@ -75,11 +75,16 @@ public class AchievementService {
                             achievement.getContent(),
                             urls,
                             achievement.getLikeCount(),
-                            achievement.getCreatedDate(),
-                            achievement.getUpdatedDate()
+                            formatDate(achievement.getCreatedDate())
                     );
                 }
         ).collect(Collectors.toList());
         return new ScrapAchievementListResponse(achievementDetailResponses);
+    }
+
+    private String formatDate(LocalDateTime time) {
+        return String.format("%d.%02d.%02d",
+                time.getYear(), time.getMonthValue(), time.getDayOfMonth());
+
     }
 }

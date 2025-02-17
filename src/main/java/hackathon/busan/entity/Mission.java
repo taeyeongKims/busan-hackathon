@@ -31,4 +31,12 @@ public class Mission extends BaseEntity {
     private String title;
     private String content;
     private Long likeCount = 0L;
+
+    public Mission(Account account, List<Category> categories, Location location, String title, String content) {
+        this.account = account;
+        this.categories = categories;
+        this.location = location;
+        this.title = title;
+        this.content = content;
+    }
 }

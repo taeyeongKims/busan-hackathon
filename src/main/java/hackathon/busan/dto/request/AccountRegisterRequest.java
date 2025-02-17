@@ -1,14 +1,12 @@
 package hackathon.busan.dto.request;
 
+import hackathon.busan.entity.Location;
+
 public record AccountRegisterRequest (
-        String login,
+        String loginId,
         String password,
+        String nickname,
         String image,
-        String zipcode,
-        String address,
-        String detailAddress,
-        String sido,
-        String sigugun,
-        String dong
+        Location location
 ){
 }
