@@ -14,4 +14,9 @@ public class AchievementScrap {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Achievement achievement;
+
+    public AchievementScrap(Account user, Achievement achievement) {
+        this.account = user;
+        this.achievement = achievement;
+    }
 }
