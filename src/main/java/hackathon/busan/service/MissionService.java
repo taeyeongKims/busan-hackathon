@@ -28,6 +28,7 @@ public class MissionService {
     private final LocationRepository locationRepository;
     private final MissionScrapRepository missionScrapRepository;
     private final AchievementRepository achievementRepository;
+    private final MissionProgressRepository progressRepository;
 
     // 모든 미션 조회
     public MissionListResponse getMissionList() {
@@ -52,6 +53,7 @@ public class MissionService {
                 .orElseThrow();
 
         account.setMissionCount(account.getMissionCount() + 1); // 미션 개수 + 1
+        account.setPoint(account.getPoint() + 10);
         accountRepository.save(account);
 
         List<Category> categories = request.category().stream()
@@ -72,7 +74,7 @@ public class MissionService {
                 .collect(Collectors.toList());
 
         return new MissionDetailResponse(mission.getId(), mission.getAccount().getId(), mission.getAccount().getNickname(),
-                mission.getTitle(), mission.getContent(), null,
+                mission.getTitle(), mission.getContent(), progressRepository.countByMission(mission),
                 formatDate(mission.getCreatedDate()), achievementRepository.countByMission(mission),
                 categories, null);
     }
@@ -104,7 +106,7 @@ public class MissionService {
     }
 
     // 미션 찜 리스트 조회
-    public ScrapMissionListResponse getScrapMissionList(@PathVariable Long userId) {
+    public ScrapMissionListResponse getScrapMissionList(Long userId) {
         Account account = accountRepository.findById(userId)
                 .orElseThrow();
 
@@ -117,6 +119,18 @@ public class MissionService {
                 .collect(Collectors.toList());
 
         return new ScrapMissionListResponse(responses);
+    }
+
+    // 미션 참여 신청
+    public void applyMission(MissionUserInfoRequest request) {
+        Account account = accountRepository.findById(request.userId())
+                .orElseThrow();
+
+        Mission mission = missionRepository.findById(request.missionId())
+                .orElseThrow();
+
+        MissionProgress progress = new MissionProgress(account, mission);
+        progressRepository.save(progress);
     }
 
     private String formatDate(LocalDateTime time) {

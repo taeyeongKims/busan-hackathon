@@ -11,9 +11,9 @@ public record MissionDetailResponse(
         String title,
         String content,
 
-        Integer applyNumber,
-        LocalDateTime date,
-        Integer acheivementNumber,
+        Long applyNumber,
+        String date,
+        Long acheivementNumber,
 
         List<String>categoryList,
         List<String> imageList

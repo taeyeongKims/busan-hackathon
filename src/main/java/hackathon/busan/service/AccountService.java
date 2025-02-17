@@ -18,7 +18,8 @@ public class AccountService {
     private final LocationRepository locationRepository;
 
     public AccountUserInfoResponse loginAccount(AccountLoginRequest request) {
-        Account account = accountRepository.findByLoginIdAndPassword(request.loginId(), request.password());
+        Account user = accountRepository.findByLoginIdAndPassword(request.loginId(), request.password());
+        Account account = accountRepository.save(user);
 
         return new AccountUserInfoResponse(account.getId(), account.getNickname(),
                 account.getLocation());
@@ -39,8 +40,7 @@ public class AccountService {
 
         // 비밀번호 암호화 추가
 
-        Account account = new Account(location, request.loginId(), request.password(), request.nickname(),
-                Long.valueOf(0), Long.valueOf(0), Long.valueOf(0));
+        Account account = new Account(location, request.loginId(), request.password(), request.nickname());
 
         accountRepository.save(account);
 
