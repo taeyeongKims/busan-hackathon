@@ -19,7 +19,7 @@ public class S3Controller {
     public ResponseEntity<UploadProfileResponse> upload(
             @PathVariable("userId") final Long userId,
             @RequestParam("file") final MultipartFile file) {
-        UploadProfileRequest request = new UploadProfileRequest(1L, file);
+        UploadProfileRequest request = new UploadProfileRequest(userId, file);
         String profile = s3Service.uploadProfile(request).profile();
         return ResponseEntity.ok(new UploadProfileResponse(profile));
     }
