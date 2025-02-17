@@ -10,6 +10,7 @@ public record AchievementDetailResponse(
         String title,
         String content,
         List<String> images,
+        Long likeCount,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
