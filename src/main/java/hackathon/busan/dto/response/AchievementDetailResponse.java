@@ -7,7 +7,6 @@ public record AchievementDetailResponse(
         Long id,
         Long accountId,
         Long missionId,
-        String title,
         String content,
         List<String> images,
         Long likeCount,

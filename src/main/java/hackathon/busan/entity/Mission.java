@@ -30,4 +30,5 @@ public class Mission extends BaseEntity {
 
     private String title;
     private String content;
+    private Long likeCount = 0L;
 }

@@ -1,8 +1,13 @@
 package hackathon.busan.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class AchievementScrap {
+@Entity
+@Getter
+@NoArgsConstructor
+public class AchievementScrap extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
