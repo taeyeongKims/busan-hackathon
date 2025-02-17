@@ -107,7 +107,7 @@ public class S3Service {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public List<String> uploadAchievement(UploadAchievementRequest request) {
+    public List<String> uploadAchievement(final UploadAchievementRequest request) {
         Account user = accountRepository.findById(request.userId()).orElseThrow();
         Mission mission = missionRepository.findById(request.missionId()).orElseThrow();
         List<S3UploadRequest> uploadList = request.images().stream().map(image -> generateAchievementName(new UploadProfileRequest(request.userId(), image)))

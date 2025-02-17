@@ -4,12 +4,13 @@ import hackathon.busan.dto.request.AchievementDetailRequest;
 import hackathon.busan.dto.request.ScrapAchievementRequest;
 import hackathon.busan.dto.response.AchievementDetailResponse;
 import hackathon.busan.dto.response.AchievementListResponse;
+import hackathon.busan.dto.response.ScrapAchievementListResponse;
+import hackathon.busan.dto.s3Dto.UploadAchievementRequest;
 import hackathon.busan.entity.*;
 import hackathon.busan.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class AchievementService {
     private final AchievementRepository achievementRepository;
     private final MissionProgressRepository missionProgressRepository;
     private final AchievementScrapRepository achievementScrapRepository;
+    private final S3Service s3Service;
     private final ImageRepository imageRepository;
 
     public void likeAchievement(final ScrapAchievementRequest request){
@@ -38,16 +40,15 @@ public class AchievementService {
     }
 
     public AchievementDetailResponse postAchievement(final AchievementDetailRequest request) {
-        Account user = accountRepository.findById(request.userId()).orElseThrow();
-        Mission mission = missionRepository.findById(request.missionId()).orElseThrow();
-        Achievement newAchievement = new Achievement(user, mission, request.content());
+        Account user = accountRepository.findById(request.getUserId()).orElseThrow();
+        Mission mission = missionRepository.findById(request.getMissionId()).orElseThrow();
+        Achievement newAchievement = new Achievement(user, mission, request.getContent());
+        // 미션 인증 저장
         Achievement savedAchievement = achievementRepository.save(newAchievement);
-
-        List<Image> imageList = request.images().stream().map(image -> new Image(user, mission, null))
-                .collect(Collectors.toList());
-        List<String> images = imageRepository.saveAll(imageList).stream().map(Image::getUrl).collect(Collectors.toList());
-        MissionProgress missionProgress = missionProgressRepository.findByAccountIdAndMissionId(request.userId(), request.missionId()).orElseThrow();
-
+        // 이미지 저장 및 url 획득
+        List<String> urls = s3Service.uploadAchievement(new UploadAchievementRequest(request.getImages(), request.getUserId(), request.getMissionId()));
+        // 미션 진행 사항 완료로 변경 및 저장
+        MissionProgress missionProgress = missionProgressRepository.findByAccountIdAndMissionId(request.getUserId(), request.getMissionId()).orElseThrow();
         missionProgress.setStatusCompleted();
         missionProgressRepository.save(missionProgress);
 
@@ -56,10 +57,30 @@ public class AchievementService {
                 user.getId(),
                 mission.getId(),
                 savedAchievement.getContent(),
-                images,
+                urls,
                 savedAchievement.getLikeCount(),
                 formatDate(savedAchievement.getCreatedDate())
         );
+    }
+
+    public ScrapAchievementListResponse getLikeAchievement(final Long userId) {
+        List<Long> achievementIds = achievementScrapRepository.findAchievementIdsByAccountId(userId);
+        List<Achievement> likeAchievement = achievementRepository.findAllById(achievementIds);
+        List<AchievementDetailResponse> achievementDetailResponses = likeAchievement.stream().map(achievement ->
+                {
+                    List<String> urls = imageRepository.findUrlsByAccountIdAndMissionId(achievement.getAccount().getId(), achievement.getMission().getId());
+                    return new AchievementDetailResponse(
+                            achievement.getId(),
+                            achievement.getAccount().getId(),
+                            achievement.getMission().getId(),
+                            achievement.getContent(),
+                            urls,
+                            achievement.getLikeCount(),
+                            formatDate(achievement.getCreatedDate())
+                    );
+                }
+        ).collect(Collectors.toList());
+        return new ScrapAchievementListResponse(achievementDetailResponses);
     }
 
     // 미션 인증글 리스트 조회
