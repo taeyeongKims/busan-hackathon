@@ -8,12 +8,13 @@ import hackathon.busan.entity.Location;
 import hackathon.busan.repository.AccountRepository;
 import hackathon.busan.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
-
+    private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final LocationRepository locationRepository;
 
@@ -38,9 +39,7 @@ public class AccountService {
             locationRepository.save(location); // 위치 저장
         }
 
-        // 비밀번호 암호화 추가
-
-        Account account = new Account(location, request.loginId(), request.password(), request.nickname());
+        Account account = new Account(location, request.loginId(), passwordEncoder.encode(request.password()), request.nickname());
 
         accountRepository.save(account);
 
