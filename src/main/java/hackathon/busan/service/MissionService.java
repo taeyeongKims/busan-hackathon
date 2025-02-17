@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +31,47 @@ public class MissionService {
     private final AchievementRepository achievementRepository;
     private final MissionProgressRepository progressRepository;
 
+    // 불평등 동네
+    private Set<String> priSet = new HashSet<>(Arrays.asList("북구", "사상구", "서구", "동구", "중구", "영도구", "사하구", "강서구"));
+
     // 모든 미션 조회
-    public MissionListResponse getMissionList() {
-        List<Mission> missionList = missionRepository.findAll();
+    public MissionListResponse getMissionList(String filter, List<String> criteria) {
+        List<Mission> allMissionList = missionRepository.findAll();
+        List<Mission> missionList = new ArrayList<>(allMissionList);
+
+        if(criteria != null) { // 카테고리 게시글만 필터링
+            missionList = allMissionList.stream()
+                            .filter(m -> m.getCategories() != null &&
+                                    m.getCategories().stream().anyMatch(cate -> criteria.contains(cate.getName())))
+                    .collect(Collectors.toList());
+        }
+
+        if(filter == null) { // 필터 적용 X, 불평등 동네 우선
+            missionList = missionList.stream()
+                    .sorted((m1, m2) -> {
+                        boolean isM1InPriSet = priSet.contains(m1.getLocation().getSigugun());
+                        boolean isM2InPriSet = priSet.contains(m2.getLocation().getSigugun());
+
+                        // priSet에 포함된 Mission을 우선순위로 정렬
+                        return Boolean.compare(isM2InPriSet, isM1InPriSet); // isM2InPriSet이 true일 경우 우선순위가 높음
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            switch(filter) {
+                case "최신순":
+                    missionList.sort(Comparator.comparing(Mission::getCreatedDate).reversed());
+                    break;
+                case "참여자순":
+                    missionList.sort((o1, o2) -> (int) (progressRepository.countByMission(o2) - progressRepository.countByMission(o1)));
+                    break;
+                case "좋아요순":
+                    missionList.sort((o1, o2) -> (int) (missionScrapRepository.countByMission(o2) - missionScrapRepository.countByMission(o1)));
+                    break;
+                default:
+                    break;
+            }
+        }
+
         List<MissionInfoResponse> responses = missionList.stream()
                 .map(m -> new MissionInfoResponse(m.getId(), m.getAccount().getId(), m.getAccount().getNickname(),
                         m.getTitle(), null, missionScrapRepository.countByMission(m), achievementRepository.countByMission(m),
