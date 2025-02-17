@@ -1,19 +1,21 @@
 package hackathon.busan.controller;
 
 import hackathon.busan.dto.response.RankingListResponse;
-import hackathon.busan.dto.response.RankingUserInfoResponse;
+import hackathon.busan.service.RankingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/ranking")
+@RequiredArgsConstructor
 public class RankingController {
+    private final RankingService rankingService;
+
+    @GetMapping
     public ResponseEntity<RankingListResponse> getRanking() {
-        RankingUserInfoResponse response = new RankingUserInfoResponse(null, null, null, null, null);
-        List<RankingUserInfoResponse> result = List.of(response);
-        return ResponseEntity.ok(new RankingListResponse(result));
+        return ResponseEntity.ok(rankingService.getRanking());
     }
 }

@@ -17,10 +17,14 @@ public class Account extends BaseEntity{
     private String loginId;
     private String password;
     private String nickname;
-    private Long missionCount;
-    private Long achievementCount;
-    private Long point;
+    private Long missionCount = 0L;
+    private Long achievementCount = 0L;
+    private Long point  = 0L;
     private String profile;
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Account(Location location, String loginId, String password, String nickname) {
         this.location = location;
