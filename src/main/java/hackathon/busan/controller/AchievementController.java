@@ -5,6 +5,7 @@ import hackathon.busan.dto.request.ScrapAchievementRequest;
 import hackathon.busan.dto.response.AchievementDetailResponse;
 import hackathon.busan.dto.response.ScrapAchievementListResponse;
 import hackathon.busan.service.AchievementService;
+import hackathon.busan.service.MissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AchievementController {
     private final AchievementService achievementService;
+    private final MissionService missionService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AchievementDetailResponse> postAchievement(
@@ -51,6 +53,6 @@ public class AchievementController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getAchievementList(@PathVariable("userId") Long userId) {
-        return null;
+        return ResponseEntity.ok(missionService.getAchievementList(userId));
     }
 }
