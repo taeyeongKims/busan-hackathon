@@ -6,6 +6,7 @@ import hackathon.busan.dto.response.AchievementDetailResponse;
 import hackathon.busan.dto.response.ScrapAchievementListResponse;
 import hackathon.busan.service.AchievementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +18,9 @@ import java.util.List;
 public class AchievementController {
     private final AchievementService achievementService;
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AchievementDetailResponse> postAchievement(
-            @RequestBody final AchievementDetailRequest achievementDetailRequest
+            @ModelAttribute final AchievementDetailRequest achievementDetailRequest
     ) {
         return ResponseEntity.ok(achievementService.postAchievement(achievementDetailRequest));
     }
