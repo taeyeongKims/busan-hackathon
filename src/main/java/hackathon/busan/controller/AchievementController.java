@@ -41,12 +41,10 @@ public class AchievementController {
         return ResponseEntity.ok("좋아요를 취소하였습니다.");
     }
 
-//    @GetMapping("/scrap/{userId}")
-//    public ResponseEntity<ScrapAchievementListResponse> getLikeAchievement(
-//            @PathVariable final Long userId
-//    ) {
-//        AchievementDetailResponse response = new AchievementDetailResponse(null, null, null, null, null, null, null, null, null);
-//        List<AchievementDetailResponse> result = List.of(response);
-//        return ResponseEntity.ok(new ScrapAchievementListResponse(result));
-//    }
+    @GetMapping("/scrap/{userId}")
+    public ResponseEntity<ScrapAchievementListResponse> getLikeAchievement(
+            @PathVariable("userId") final Long userId
+    ) {
+        return ResponseEntity.ok(achievementService.getLikeAchievement(userId));
+    }
 }

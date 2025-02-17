@@ -3,6 +3,7 @@ package hackathon.busan.service;
 import hackathon.busan.dto.request.AchievementDetailRequest;
 import hackathon.busan.dto.request.ScrapAchievementRequest;
 import hackathon.busan.dto.response.AchievementDetailResponse;
+import hackathon.busan.dto.response.ScrapAchievementListResponse;
 import hackathon.busan.dto.s3Dto.UploadAchievementRequest;
 import hackathon.busan.entity.*;
 import hackathon.busan.repository.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class AchievementService {
     private final MissionProgressRepository missionProgressRepository;
     private final AchievementScrapRepository achievementScrapRepository;
     private final S3Service s3Service;
+    private final ImageRepository imageRepository;
 
     public void likeAchievement(final ScrapAchievementRequest request){
         Account user = accountRepository.findById(request.userId()).orElseThrow();
@@ -57,5 +60,26 @@ public class AchievementService {
                 savedAchievement.getCreatedDate(),
                 savedAchievement.getUpdatedDate()
         );
+    }
+
+    public ScrapAchievementListResponse getLikeAchievement(final Long userId) {
+        List<Long> achievementIds = achievementScrapRepository.findAchievementIdsByAccountId(userId);
+        List<Achievement> likeAchievement = achievementRepository.findAllById(achievementIds);
+        List<AchievementDetailResponse> achievementDetailResponses = likeAchievement.stream().map(achievement ->
+                {
+                    List<String> urls = imageRepository.findUrlsByAccountIdAndMissionId(achievement.getAccount().getId(), achievement.getMission().getId());
+                    return new AchievementDetailResponse(
+                            achievement.getId(),
+                            achievement.getAccount().getId(),
+                            achievement.getMission().getId(),
+                            achievement.getContent(),
+                            urls,
+                            achievement.getLikeCount(),
+                            achievement.getCreatedDate(),
+                            achievement.getUpdatedDate()
+                    );
+                }
+        ).collect(Collectors.toList());
+        return new ScrapAchievementListResponse(achievementDetailResponses);
     }
 }
