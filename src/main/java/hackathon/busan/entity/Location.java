@@ -24,4 +24,13 @@ public class Location extends BaseEntity {
     private String sido;
     private String sigugun;
     private String dong;
+
+    public Location(String zipcode, String address, String detailAddress, String sido, String sigugun, String dong) {
+        this.zipcode = zipcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.sido = sido;
+        this.sigugun = sigugun;
+        this.dong = dong;
+    }
 }

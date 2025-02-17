@@ -20,4 +20,10 @@ public class Image extends BaseEntity {
     @JoinColumn
     private Mission mission;
     private String url;
+
+    public Image(Account account, Mission mission, String url) {
+        this.account = account;
+        this.mission = mission;
+        this.url = url;
+    }
 }
