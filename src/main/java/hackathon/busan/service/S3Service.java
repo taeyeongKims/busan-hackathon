@@ -6,10 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import hackathon.busan.dto.request.UploadProfileRequest;
 import hackathon.busan.dto.response.UploadProfileResponse;
-import hackathon.busan.dto.s3Dto.OldKeyRequest;
-import hackathon.busan.dto.s3Dto.S3UploadRequest;
-import hackathon.busan.dto.s3Dto.UploadAchievementRequest;
-import hackathon.busan.dto.s3Dto.UploadAchievementResponse;
+import hackathon.busan.dto.s3Dto.*;
 import hackathon.busan.entity.Account;
 import hackathon.busan.entity.Image;
 import hackathon.busan.entity.Mission;
@@ -125,6 +122,28 @@ public class S3Service {
                 ? "." + contentType.split("/")[1]
                 : ".png";
         String url = String.format("user-uploads/%d/achievement%s", request.userId(), fileExtension);
+        return new S3UploadRequest(request.multipartFile(), url);
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public List<String> uploadMission(final UploadMissionRequest request) {
+        Account user = accountRepository.findById(request.userId()).orElseThrow();
+        Mission mission = missionRepository.findById(request.missionId()).orElseThrow();
+        List<S3UploadRequest> uploadList = request.images().stream().map(image -> generateAchievementName(new UploadProfileRequest(request.userId(), image)))
+                .collect(Collectors.toList());
+
+        List<Image> images = uploadList.stream().map(upload -> new Image(user, mission, uploadToS3(upload))).toList();
+        List<Image> savedImages = imageRepository.saveAll(images);
+
+        return savedImages.stream().map(Image::getUrl).collect(Collectors.toList());
+    }
+
+    private S3UploadRequest generateMissionName(final UploadProfileRequest request) {
+        String contentType = request.multipartFile().getContentType();
+        String fileExtension = contentType != null && contentType.contains("/")
+                ? "." + contentType.split("/")[1]
+                : ".png";
+        String url = String.format("user-uploads/%d/mission%s", request.userId(), fileExtension);
         return new S3UploadRequest(request.multipartFile(), url);
     }
 }

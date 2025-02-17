@@ -51,6 +51,8 @@ public class AchievementService {
         MissionProgress missionProgress = missionProgressRepository.findByAccountIdAndMissionId(request.getUserId(), request.getMissionId()).orElseThrow();
         missionProgress.setStatusCompleted();
         missionProgressRepository.save(missionProgress);
+        // user 미션 완료에 따른 point 증가
+        user.setPoint(user.getPoint() + 10L);
 
         return new AchievementDetailResponse(
                 savedAchievement.getId(),
@@ -91,8 +93,11 @@ public class AchievementService {
         List<Achievement> achievements = achievementRepository.findByMission(mission);
 
         List<AchievementDetailResponse> responses = achievements.stream()
-                .map(a -> new AchievementDetailResponse(a.getId(), a.getAccount().getId(), a.getMission().getId(),
-                        a.getContent(), null, achievementScrapRepository.countById(a.getId()), formatDate(a.getCreatedDate())))
+                .map(a -> {
+                    List<String> urls = imageRepository.findUrlsByAccountIdAndMissionId(a.getAccount().getId(), missionId);
+                    return new AchievementDetailResponse(a.getId(), a.getAccount().getId(), a.getMission().getId(),
+                            a.getContent(), urls, achievementScrapRepository.countById(a.getId()), formatDate(a.getCreatedDate()));
+                })
                 .collect(Collectors.toList());
         return new AchievementListResponse(responses);
     }
