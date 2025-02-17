@@ -3,6 +3,7 @@ package hackathon.busan.service;
 import hackathon.busan.dto.request.AchievementDetailRequest;
 import hackathon.busan.dto.request.ScrapAchievementRequest;
 import hackathon.busan.dto.response.AchievementDetailResponse;
+import hackathon.busan.dto.response.AchievementListResponse;
 import hackathon.busan.dto.response.ScrapAchievementListResponse;
 import hackathon.busan.dto.s3Dto.UploadAchievementRequest;
 import hackathon.busan.entity.*;
@@ -80,6 +81,20 @@ public class AchievementService {
                 }
         ).collect(Collectors.toList());
         return new ScrapAchievementListResponse(achievementDetailResponses);
+    }
+
+    // 미션 인증글 리스트 조회
+    public AchievementListResponse getAchievementList(Long missionId) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow();
+
+        List<Achievement> achievements = achievementRepository.findByMission(mission);
+
+        List<AchievementDetailResponse> responses = achievements.stream()
+                .map(a -> new AchievementDetailResponse(a.getId(), a.getAccount().getId(), a.getMission().getId(),
+                        a.getContent(), null, achievementScrapRepository.countById(a.getId()), formatDate(a.getCreatedDate())))
+                .collect(Collectors.toList());
+        return new AchievementListResponse(responses);
     }
 
     private String formatDate(LocalDateTime time) {
