@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mission")
@@ -23,8 +25,9 @@ public class MissionController {
 
     @Operation(summary = "미션 리스트 조회")
     @GetMapping()
-    public ResponseEntity<MissionListResponse> getMissionList() {
-        return ResponseEntity.ok(missionService.getMissionList());
+    public ResponseEntity<MissionListResponse> getMissionList(@RequestParam(value = "filter", required = false) String filter,
+                                                              @RequestParam(value = "criteria", required = false) List<String> criteria) {
+        return ResponseEntity.ok(missionService.getMissionList(filter, criteria));
     }
 
     @Operation(summary = "미션 생성")
